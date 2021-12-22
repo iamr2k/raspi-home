@@ -1,0 +1,17 @@
+WantedBy=multi-user.target
+pi@raspberrypi:~/rbk $ sudo nano /etc/nginx/sites-available/temp
+pi@raspberrypi:~/rbk $ sudo cat /etc/nginx/sites-available/temp
+server {
+    listen 80;
+    server_name raspberrypi.local;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/pi/rbk/temp;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
