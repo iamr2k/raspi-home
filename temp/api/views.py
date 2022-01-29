@@ -19,7 +19,7 @@ def check():
     else:
         temperature = 0
         humidity = 0
-    resp = {"temperature":temperature,"humidity":humidity}
+    resp = {"temperature":round(temperature,1),"humidity":round(humidity,2)}
     return resp
 
 
