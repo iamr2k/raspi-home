@@ -24,8 +24,8 @@
 <div class="card">
 
     <h2> Weather</h2>
-    <h3><span>Humidity - {{humidity}}% <span class="dot">•</span> </span></h3>
-    <h1>{{temp}}°</h1>
+    <h3><span id="humidity"> <span class="dot">•</span> </span></h3>
+    <h1 id="temp"></h1>
     <div class="sky">
         <div class="sun"></div>
         <div class="cloud">
@@ -37,3 +37,32 @@
 
 
 </div>
+<script>
+    var socket = new WebSocket('ws://weather.local/ws/');
+
+    socket.onopen = function open() {
+        console.log('WebSockets connection created.');
+        // send periodically to socket
+        setInterval(function () {
+            socket.send('ping');
+        }, 1000);
+
+
+    };
+    // change the text of h3 element based on the message received from server
+    socket.onmessage = function (event) {
+        console.log('Message received: ' + event.data);
+        var data = JSON.parse(event.data);
+        document.getElementById('humidity').innerHTML = 'Humidity   -   ' + data.humidity + '%';
+        document.getElementById('temp').innerHTML = data.temp + '°';
+    };
+    // socket.onmessage = event => console.log(event.data)
+    if (socket.readyState == WebSocket.OPEN) {
+        // socket.onopen();
+
+
+    }
+    // socket.onmessage = event => console.log(event.data)
+    // socket.send("ping");
+    // console.log('WebSockets connection created.');
+</script>
